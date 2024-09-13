@@ -1,0 +1,86 @@
+@startuml
+class Usuario {
+  +id: int
+  +nome: string
+  +email: string
+  +senha: string
+  +bio: string
+  +fotoPerfil: string
+  +seguidores: List<Usuario>
+  +seguidos: List<Usuario>
+  +criarConta(): void
+  +login(): void
+  +editarPerfil(): void
+  +seguir(usuario: Usuario): void
+}
+
+class Jogo {
+  +id: int
+  +titulo: string
+  +descricao: string
+  +dataLancamento: Date
+  +desenvolvedor: string
+  +plataformas: List<string>
+  +genero: string
+  +avaliacoes: List<Avaliacao>
+  +tags: List<string>
+  +mediaAvaliacoes(): float
+}
+
+class Avaliacao {
+  +id: int
+  +nota: float
+  +comentario: string
+  +data: Date
+  +autor: Usuario
+  +jogo: Jogo
+  +curtidas: int
+  +adicionarComentario(comentario: string): void
+  +curtir(): void
+}
+
+class ListaJogos {
+  +id: int
+  +nome: string
+  +jogos: List<Jogo>
+  +autor: Usuario
+  +dataCriacao: Date
+  +compartilhar(): void
+}
+
+class FeedAtividade {
+  +atividades: List<Atividade>
+  +exibirAtividades(usuario: Usuario): void
+}
+
+class Atividade {
+  +id: int
+  +tipo: string <<enumeration>> { Avaliacao, CriacaoLista, SeguirUsuario }
+  +data: Date
+  +usuario: Usuario
+  +detalhes: string
+}
+
+class Notificacao {
+  +id: int
+  +mensagem: string
+  +data: Date
+  +usuario: Usuario
+  +visualizada: boolean
+}
+
+class Tag {
+  +nome: string
+  +descricao: string
+}
+
+Usuario "1" -- "0..*" Avaliacao
+Usuario "1" -- "0..*" ListaJogos
+Usuario "1" -- "0..*" Atividade
+Usuario "1" -- "0..*" Notificacao
+Usuario "0..*" -- "0..*" Usuario : Segue >
+Jogo "0..*" -- "1" Avaliacao
+Jogo "0..*" -- "0..*" Tag
+ListaJogos "0..*" -- "0..*" Jogo
+FeedAtividade "1" -- "0..*" Atividade
+@enduml
